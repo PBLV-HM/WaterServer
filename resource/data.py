@@ -1,6 +1,6 @@
 from BaseClass import WaterBase
 from flask import request
-from sqlalch import Data
+import sqlalch
 from datetime import datetime
 import dateutil.parser
 from sqlalch import Base
@@ -13,7 +13,7 @@ class Data(WaterBase):
 
         session = self.getsession
 
-        data2 = Data()
+        data2 = sqlalch.Data()
 
         data2.lat = a['lat']
         data2.lon = a['lon']

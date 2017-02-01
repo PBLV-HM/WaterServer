@@ -42,7 +42,7 @@ class Data(Base):
     PrimaryKeyConstraint('devID', 'timestamp')
     lon = Column('lon', Float)
     lat = Column('lat', Float)
-    degree = Column('degree', Float)
+    degree = Column('degree', Integer)
     distance = Column('deg', Integer)
 
 class User(Base):
