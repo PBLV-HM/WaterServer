@@ -1,6 +1,6 @@
 from flask.views import MethodView
-
-class Info(MethodView):
+from BaseClass import WaterBase
+class Info(WaterBase):
     def get(self):
         return "This API has the following Endpoints: \n" \
                "setGroup<DeviceID/GroupName>" \
