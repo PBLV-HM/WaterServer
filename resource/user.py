@@ -2,7 +2,6 @@ from BaseClass import WaterBase
 from sqlalch import User as users
 import json
 
-
 class User(WaterBase):
 
     def post(self):

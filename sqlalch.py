@@ -1,7 +1,11 @@
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Sequence, ForeignKey, DateTime, PrimaryKeyConstraint, Float, Boolean
+from passlib.apps import custom_app_context as pwd_context
 
-Base = declarative_base()
+from flaskBase import db, app
+
+Base = db.Model
 class Device(Base):
     __tablename__ = 'Device'
     id = Column(String(32), primary_key=True, nullable=False)
@@ -49,16 +53,37 @@ class User(Base):
     __tablename__ = 'User'
     id = Column('id', Integer, primary_key=True)
     username = Column('username', String(32), index = True, nullable=False)
-    password = Column('password', String(72), nullable=False)
-    token = Column('token', String(32))
+    password_hash = Column('password_hash', String(128), nullable=False)
     firstname = Column('firstname', String(32))
     lastname = Column('lastname', String(32))
+
+    def hash_password(self, password):
+        self.password_hash = pwd_context.encrypt(password)
+
+    def verify_password(self, password):
+        return pwd_context.verify(password, self.password_hash)
+
+    def generate_auth_token(self, expiration = 600):
+        s = Serializer(app.config['SECRET_KEY'], expires_in = expiration)
+        return s.dumps({ 'id': self.id })
+
+    @staticmethod
+    def verify_auth_token(token):
+        s = Serializer(app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except SignatureExpired:
+            return None # valid token, but expired
+        except BadSignature:
+            return None # invalid token
+        user = User.query.get(data['id'])
+        return user
 
     def __repr__(self):
         #return "<User(username='%s', password='%s', token='%s', firstname='%s', lastname='%s')>" % (
         #                        self.username, self.password, self.token, self.firstname, self.lastname)
         return {"id": self.id, "username":self.username, "password":self.password, "firstname": self.firstname,
-                "lastname": self.lastname, "token": self.token}
+                "lastname": self.lastname}
 
 if __name__ == '__main__':
     from sqlalchemy import create_engine, engine

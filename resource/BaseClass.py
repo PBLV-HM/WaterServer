@@ -1,10 +1,9 @@
 from flask.views import MethodView
+from flask_restful import Resource
 from sqlalchemy import create_engine
 from sqlalch import Base
 from sqlalchemy.orm import sessionmaker
 from sqlalch import User as users
-
-
 
 class WaterBase(MethodView):
     mysqlconnection = None
@@ -15,7 +14,7 @@ class WaterBase(MethodView):
         if self.mysqlconnection:
             return self.mysqlconnection
         else:
-            self.mysqlconnection = create_engine('mysql://root:foobar@localhost/hmpblv')
+            self.mysqlconnection = create_engine('mysql://root@localhost/hmpblv')
             Base.metadata.bind = self.mysqlconnection
             return self.mysqlconnection
 

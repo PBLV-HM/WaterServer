@@ -1,5 +1,5 @@
 from BaseClass import WaterBase
-from flask import request
+from flaskBase import request
 import sqlalch
 import dateutil.parser
 

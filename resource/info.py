@@ -1,4 +1,3 @@
-from flask.views import MethodView
 from BaseClass import WaterBase
 class Info(WaterBase):
     def get(self):

@@ -1,4 +1,7 @@
-flask
+Flask
+Flask-HTTPAuth
+Flask-SQLAlchemy
 Flask-BasicAuth
 sqlalchemy
 flask_restful
+passlib
