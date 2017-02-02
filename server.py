@@ -12,12 +12,9 @@ auth = HTTPBasicAuth()
 app = Flask(__name__)
 api = restful.Api(app)
 
-
 api.add_resource(Info, '/info')
 api.add_resource(Data, '/data')
 api.add_resource(User, '/user')
-
-
 
 
 if __name__ == '__main__':
