@@ -91,5 +91,5 @@ class User(Base):
 if __name__ == '__main__':
     from sqlalchemy import create_engine, engine
 
-    #engine = create_engine('mysql://root@localhost/hmpblv')
+    engine = create_engine('mysql://root@localhost/hmpblv')
     Base.metadata.create_all(engine)
