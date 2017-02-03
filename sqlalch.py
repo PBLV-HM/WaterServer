@@ -82,11 +82,11 @@ class User(Base):
     def __repr__(self):
         #return "<User(username='%s', password='%s', token='%s', firstname='%s', lastname='%s')>" % (
         #                        self.username, self.password, self.token, self.firstname, self.lastname)
-        return {"id": self.id, "username":self.username, "password":self.password, "firstname": self.firstname,
+        return {"id": self.id, "username":self.username, "password":self.password_hash, "firstname": self.firstname,
                 "lastname": self.lastname}
 
 if __name__ == '__main__':
     from sqlalchemy import create_engine, engine
 
-    engine = create_engine('mysql://root@localhost/hmpblv')
+    engine = create_engine('mysql://root:foobar@localhost/hmpblv')
     Base.metadata.create_all(engine)
