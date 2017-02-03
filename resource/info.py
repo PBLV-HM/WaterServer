@@ -21,7 +21,7 @@ class Info(WaterBase):
         a = request.get_json()
 
         session = self.getsession
-        data = session.query(users).filter(users.username == username).one()
+        data = session.query(users).filter(users.username == a['username']).one()
         b = data.__dict__
         del b['_sa_instance_state']
 
