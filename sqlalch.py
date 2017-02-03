@@ -11,6 +11,7 @@ class Device(Base):
     __tablename__ = 'Device'
     id = Column(String(32), primary_key=True, nullable=False)
     name = Column(String(50))
+    active = Column(Boolean)
     userId = Column('userId', Integer, ForeignKey("User.id"))
 
     def __repr__(self):
