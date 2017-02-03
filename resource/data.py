@@ -23,3 +23,12 @@ class Data(WaterBase):
 
         print a
         return("200 OK")
+
+    def get(self):
+        a = request.get_json()
+        session = self.getsession
+
+
+
+
+

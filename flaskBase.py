@@ -1,7 +1,6 @@
 from flask import Flask, abort, request, jsonify, g, url_for
 from flask_httpauth import HTTPBasicAuth
 from flask_sqlalchemy import SQLAlchemy
-
 import flask_restful as restful
 
 app = Flask(__name__)

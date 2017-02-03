@@ -9,18 +9,18 @@ Base = db.Model
 
 class Device(Base):
     __tablename__ = 'Device'
-    id = Column(String(32), primary_key=True, nullable=False)
+    id = Column(Integer, primary_key=True)
     name = Column(String(50))
     active = Column(Boolean)
-    userId = Column('userId', Integer)
+    userId = Column('userId', String(50))
 
     def __repr__(self):
         return {"userId": self.userId, "name": self.name, "active": self.active, "id": self.id}
 
 class GroupEntry(Base):
     __tablename__ = 'GroupEntry'
-    grpID = Column('grpID', Integer, ForeignKey("Group.grpID"), nullable=False)
-    devID = Column('devID', String(32), ForeignKey("Device.id"), nullable=False, primary_key=True)
+    grpID = Column('grpID', Integer)
+    devID = Column('devID', String(32))
     timestamp = Column('timestamp', DateTime, nullable=False, primary_key=True)
     normPeg = Column('normPeg', Float)
     PrimaryKeyConstraint('devID', 'timestamp')
@@ -28,12 +28,12 @@ class GroupEntry(Base):
         return "<GroupEntrie(grpID='%s', timestamp='%s', devID='%s')>" % (
                                 self.grpID, self.timestamp, self.devID)
 
-class Group(Base):
-    __tablename__ = 'Group'
-    grpName = Column('grpName', String(32), nullable=False)
+class Groups(Base):
+    __tablename__ = 'Groups'
+    grpName = Column('grpName', String(50), nullable=False)
     grpID = Column('grpID', Integer, primary_key=True, nullable=False, autoincrement=True)
-    grpState = Column ('grpState', Boolean, nullable=False)
-    userId = Column('userId', Integer, ForeignKey("User.id"))
+    grpState = Column('grpState', Boolean, nullable=False)
+    user = Column('user', String(50))
 
     def __repr__(self):
         return "<Group(grpID='%s', grpName='%s', devID='%s', grpState='%s')>" % (
@@ -53,8 +53,7 @@ class Data(Base):
 
 class User(Base):
     __tablename__ = 'User'
-    id = Column('id', Integer, primary_key=True)
-    username = Column('username', String(32), index = True, nullable=False)
+    username = Column('username', String(32), index = True, nullable=False, primary_key=True)
     password_hash = Column('password_hash', String(128), nullable=False)
     firstname = Column('firstname', String(32))
     lastname = Column('lastname', String(32))

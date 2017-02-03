@@ -6,6 +6,7 @@ from resource.auth import Auth as RAuth
 from resource.info import Info
 from resource.data import Data
 from resource.device import Device
+from resource.group import Group
 from resource.user import User as Userquery
 from sqlalch import User
 
@@ -28,6 +29,8 @@ api.add_resource(Data, '/data')
 api.add_resource(RAuth, '/auth')
 api.add_resource(Userquery, '/user')
 api.add_resource(Device, '/device')
+api.add_resource(Group, '/group')
+
 
 
 if __name__ == '__main__':
