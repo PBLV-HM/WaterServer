@@ -9,22 +9,33 @@ class WaterBase(MethodView):
     mysqlconnection = None
     mysqlsession = None
 
+    def __init__(self):
+        global mysqlconnection
+        global mysqlsession
+        mysqlconnection = None
+        mysqlsession = None
+
     @property
     def mysqlconn(self):
-        if self.mysqlconnection:
-            return self.mysqlconnection
+        global mysqlconnection
+        global mysqlsession
+        if mysqlconnection:
+            return mysqlconnection
         else:
-            self.mysqlconnection = create_engine('mysql://hmpblv:ahs7ThasaiMioj@localhost/hmpblv')
-            Base.metadata.bind = self.mysqlconnection
-            return self.mysqlconnection
+            mysqlconnection = create_engine('mysql://hmpblv:ahs7ThasaiMioj@localhost/hmpblv')
+            Base.metadata.bind = mysqlconnection
+            return mysqlconnection
 
 
     @property
     def getsession(self):
-        if self.mysqlsession:
-            return self.mysqlsession
+        global mysqlconnection
+        global mysqlsession
+
+        if mysqlsession:
+            return mysqlsession
         else:
             session = sessionmaker()
             session.configure(bind=self.mysqlconn)
-            self.mysqlsession = session()
-            return self.mysqlsession
+            mysqlsession = session()
+            return mysqlsession
