@@ -5,6 +5,7 @@ from flaskBase import g, api, app, auth
 from resource.auth import Auth as RAuth
 from resource.info import Info
 from resource.data import Data
+from resource.device import Device
 from resource.user import User as Userquery
 from sqlalch import User
 
@@ -26,6 +27,8 @@ api.add_resource(Info, '/info')
 api.add_resource(Data, '/data')
 api.add_resource(RAuth, '/auth')
 api.add_resource(Userquery, '/user')
+api.add_resource(Device, '/device')
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=63837, host='0.0.0.0')

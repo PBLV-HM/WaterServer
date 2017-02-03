@@ -12,11 +12,10 @@ class Device(Base):
     id = Column(String(32), primary_key=True, nullable=False)
     name = Column(String(50))
     active = Column(Boolean)
-    userId = Column('userId', Integer, ForeignKey("User.id"))
+    userId = Column('userId', Integer)
 
     def __repr__(self):
-        return "<id(id='%s', name='%s')>" % (self.id, self.name)
-
+        return {"userId": self.userId, "name": self.name, "active": self.active, "id": self.id}
 
 class GroupEntry(Base):
     __tablename__ = 'GroupEntry'
