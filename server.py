@@ -5,7 +5,7 @@ from flaskBase import g, api, app, auth
 from resource.auth import Auth as RAuth
 from resource.info import Info
 from resource.data import Data
-#from resource.user import User
+from resource.user import User as Userquery
 from sqlalch import User
 
 
@@ -25,7 +25,7 @@ def verify_password(username_or_token, password):
 api.add_resource(Info, '/info')
 api.add_resource(Data, '/data')
 api.add_resource(RAuth, '/auth')
-#api.add_resource(User, '/user')
+api.add_resource(Userquery, '/user')
 
 if __name__ == '__main__':
     app.run(debug=True)
