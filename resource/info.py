@@ -28,4 +28,4 @@ class Info(WaterBase):
         if a['password'] == b['password_hash']:
             return json.dumps(b)
         else:
-            return unauthenticated
+            return "403 forbidden"
