@@ -6,10 +6,12 @@ from passlib.apps import custom_app_context as pwd_context
 from flaskBase import db, app
 
 Base = db.Model
+
 class Device(Base):
     __tablename__ = 'Device'
     id = Column(String(32), primary_key=True, nullable=False)
     name = Column(String(50))
+    active = Column(Boolean)
     userId = Column('userId', Integer, ForeignKey("User.id"))
 
     def __repr__(self):
@@ -32,6 +34,7 @@ class Group(Base):
     grpName = Column('grpName', String(32), nullable=False)
     grpID = Column('grpID', Integer, primary_key=True, nullable=False, autoincrement=True)
     grpState = Column ('grpState', Boolean, nullable=False)
+    userId = Column('userId', Integer, ForeignKey("User.id"))
 
     def __repr__(self):
         return "<Group(grpID='%s', grpName='%s', devID='%s', grpState='%s')>" % (

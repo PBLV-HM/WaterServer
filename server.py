@@ -28,4 +28,4 @@ api.add_resource(RAuth, '/auth')
 api.add_resource(Userquery, '/user')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=63837, host='0.0.0.0')
