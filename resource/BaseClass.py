@@ -14,7 +14,7 @@ class WaterBase(MethodView):
         if self.mysqlconnection:
             return self.mysqlconnection
         else:
-            self.mysqlconnection = create_engine('mysql://root:foobar@localhost/hmpblv')
+            self.mysqlconnection = create_engine('mysql://hmpblv:ahs7ThasaiMioj@localhost/hmpblv')
             Base.metadata.bind = self.mysqlconnection
             return self.mysqlconnection
 
