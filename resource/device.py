@@ -1,33 +1,67 @@
-from sqlalchemy.sql import select
+from flask import g
+from flask_restful import reqparse, marshal, fields, marshal_with, abort
+
+from flaskBase import auth, db
 from sqlalch import Device as devices
 from BaseClass import WaterBase
 from flask import request
-import json
+
+device_fields = {
+    'id': fields.Integer,
+    'name': fields.String,
+    'userId': fields.Integer,
+    'active': fields.Boolean
+}
+
 
 class Device(WaterBase):
-    def post(self):
-        a = request.get_json()
-        session = self.getsession
-        dev = devices()
+    decorators = [auth.login_required]
 
-        dev.id = a['id']
-        dev.name = a['name']
-        dev.userId = a['userId']
-        dev.active = bool(a['active'])
-        session.add(dev)
-        session.commit()
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('name', type=str, location='json', required=True)
+        self.reqparse.add_argument('active', type=bool, location='json', required=True)
 
-    def get(self):
-        username = request.args.get('user')
-        session = self.getsession
+    def get(self, id):
+        userid = g.user.id
+        alldata = db.session.query(devices).filter(devices.userId == userid)
 
+        return [marshal(data, device_fields) for data in alldata]
 
-        data = session.query(devices).filter(devices.name == username)
-        userDevices = []
-        for i in data:
-            temp = i.__dict__
-            del temp['_sa_instance_state']
-            userDevices.append(temp)
+    @marshal_with(device_fields)
+    def post(self, id):
+        args = self.reqparse.parse_args()
+        device = devices(id = id,
+                         name = args['name'],
+                         active = args['active'],
+                         userId = g.user.id)
 
-        b = {"devices": userDevices}
-        return json.dumps(b)
+        db.session.add(device)
+        db.session.commit()
+
+        return device, 201
+
+    def put(self, id):
+        args = self.reqparse.parse_args()
+        userid = g.user.id
+        device = db.session.query(devices)\
+            .filter(devices.userId == userid)\
+            .filter(devices.id == id)
+
+        if device:
+            device.update({"name": args['name'],"active": args['active']});
+            db.session.commit()
+            return {}, 201
+        else:
+            return {}, 404
+
+    def delete(self, id):
+        userid = g.user.id
+        device = db.session.query(devices)\
+            .filter(devices.userId == userid)\
+            .filter(devices.id == id).first()
+        if not device:
+            abort(404)
+        db.session.delete(device)
+        db.session.commit()
+        return {}, 204

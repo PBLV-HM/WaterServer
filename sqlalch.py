@@ -1,3 +1,4 @@
+import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Sequence, ForeignKey, DateTime, PrimaryKeyConstraint, Float, Boolean
@@ -12,7 +13,7 @@ class Device(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
     active = Column(Boolean)
-    userId = Column('userId', String(50))
+    userId = Column('userId', Integer)
 
     def __repr__(self):
         return {"userId": self.userId, "name": self.name, "active": self.active, "id": self.id}
@@ -20,7 +21,7 @@ class Device(Base):
 class GroupEntry(Base):
     __tablename__ = 'GroupEntry'
     grpID = Column('grpID', Integer)
-    devID = Column('devID', String(32))
+    devID = Column('devID', Integer)
     timestamp = Column('timestamp', DateTime, nullable=False, primary_key=True)
     normPeg = Column('normPeg', Float)
     PrimaryKeyConstraint('devID', 'timestamp')
@@ -41,19 +42,20 @@ class Groups(Base):
 
 class Data(Base):
     __tablename__ = 'Data'
-    devID = Column('devID', String(32), nullable=False, primary_key=True)
-    timestamp = Column('timestamp', DateTime, nullable=False, primary_key=True)
+    devID = Column('devID', Integer, nullable=False, primary_key=True)
+    timestamp = Column('timestamp', DateTime, nullable=False, primary_key=True, default=datetime.datetime.utcnow)
     PrimaryKeyConstraint('devID', 'timestamp')
     lon = Column('lon', Float)
     lat = Column('lat', Float)
-    degree = Column('degree', Integer)
-    distance = Column('deg', Float)
+    degree = Column('degree', Float)
+    distance = Column('dist', Float)
     airpressure = Column('airpressure', Integer)
     wet = Column('wet', Integer)
 
 class User(Base):
     __tablename__ = 'User'
-    username = Column('username', String(32), index = True, nullable=False, primary_key=True)
+    id = Column('id', Integer, primary_key=True)
+    username = Column('username', String(32), index = True, nullable=False, unique=True)
     password_hash = Column('password_hash', String(128), nullable=False)
     firstname = Column('firstname', String(32))
     lastname = Column('lastname', String(32))
@@ -67,6 +69,9 @@ class User(Base):
     def generate_auth_token(self, expiration = 600):
         s = Serializer(app.config['SECRET_KEY'], expires_in = expiration)
         return s.dumps({ 'id': self.id })
+
+    def is_user_name_taken(cls, username):
+        return db.session.query(db.exists().where(User.username == username)).scalar()
 
     @staticmethod
     def verify_auth_token(token):
@@ -87,7 +92,5 @@ class User(Base):
                 "lastname": self.lastname}
 
 if __name__ == '__main__':
-    from sqlalchemy import create_engine, engine
-
-    engine = create_engine('mysql://hmpblv:ahs7ThasaiMioj@localhost/hmpblv')
-    Base.metadata.create_all(engine)
+    db.drop_all()
+    db.create_all()
