@@ -1,4 +1,3 @@
-import fields as fields
 from flask_restful import reqparse, marshal, fields, marshal_with
 from BaseClass import WaterBase
 from flaskBase import request, db
