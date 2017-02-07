@@ -23,6 +23,7 @@ class GroupList(WaterBase):
         result = db.engine.execute("""SELECT *, (SELECT grpId FROM GroupEntry WHERE devId = d.id ORDER BY timestamp DESC LIMIT 1) as grp
                     FROM `Device` as d
                     WHERE `userId` = {user} """.format(user = g.user.id))
+        result = list(result)
 
         for group in all_groups:
             group.devices = []
