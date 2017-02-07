@@ -31,7 +31,7 @@ class GroupList(WaterBase):
             for row in result:
                 if row["grp"] == group.id:
                     group.devices.append(row)
-                elif row["grp"] is None:
+                elif row["grp"] is None or row["grp"] == 0:
                     group.devsNotInGroup.append(row)
 
         return [marshal(task, group_fields) for task in all_groups]
