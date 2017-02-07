@@ -19,6 +19,22 @@ class GroupList(WaterBase):
 
     def get(self):
         all_groups = db.session.query(groups).filter(groups.userId == g.user.id).all()
+
+        result = db.engine.execute("""SELECT *, (SELECT grpId FROM GroupEntry WHERE devId = d.id ORDER BY timestamp DESC LIMIT 1) as grp
+                    FROM `Device` as d
+                    WHERE `userId` = {user} """.format(user = g.user.id))
+
+
+
+        for group in all_groups:
+            group.devices = []
+            group.devsNotInGroup = []
+            for row in result:
+                if row["grp"] == group.id:
+                    group.devices.append(row)
+                else:
+                    group.devsNotInGroup.append(row)
+
         return [marshal(task, group_fields) for task in all_groups]
 
     @marshal_with(group_fields)

@@ -2,6 +2,7 @@ from flask import g
 from sqlalchemy.sql import select
 
 from flaskBase import auth, db
+from resource.device import device_fields
 from sqlalch import Groups as groups
 from BaseClass import WaterBase
 from flask import request
@@ -11,7 +12,9 @@ from flask_restful import reqparse, marshal, fields, marshal_with, abort
 group_fields = {
     'id': fields.Integer,
     'name': fields.String,
-    'state': fields.Boolean
+    'state': fields.Boolean,
+    'devices': fields.List(fields.Nested(device_fields)),
+    'devsNotInGroup': fields.List(fields.Nested(device_fields))
 }
 
 class Group(WaterBase):

@@ -1,5 +1,6 @@
 import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired
+from sqlalchemy import text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Sequence, ForeignKey, DateTime, PrimaryKeyConstraint, Float, Boolean
 from passlib.apps import custom_app_context as pwd_context
@@ -50,8 +51,19 @@ class Data(Base):
     lat = Column('lat', Float)
     degree = Column('degree', Float)
     distance = Column('dist', Float)
-    airpressure = Column('airpressure', Integer)
     wet = Column('wet', Integer)
+
+    @staticmethod
+    def sql_data_query(minutes, userid):
+        return text(""""SELECT
+            FROM_UNIXTIME( (UNIX_TIMESTAMP(  `timestamp` ) DIV ( {min} * 60 ) ) * ( {min} * 60 )) as time_interval,
+            COUNT(*) as data_count,
+            AVG(degree) as degree,
+            AVG(dist) as dist,
+            AVG(wet) as wet
+        FROM Data, Device
+        WHERE Device.id = Data.devID AND userId = {user}
+        GROUP BY UNIX_TIMESTAMP(  `timestamp` ) DIV ( {min} * 60 )""".format(min=minutes, user=userid))
 
 class User(Base):
     __tablename__ = 'User'

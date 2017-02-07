@@ -24,7 +24,6 @@ class Data(WaterBase):
         self.reqparse.add_argument('lon', type=float, location='json', required=True)
         self.reqparse.add_argument('degree', type=float, location='json', required=True)
         self.reqparse.add_argument('distance', type=float, location='json', required=True)
-        self.reqparse.add_argument('airpressure', type=int, location='json', required=True)
         self.reqparse.add_argument('wet', type=int, location='json', required=True)
 
     def get(self, id):
@@ -44,7 +43,6 @@ class Data(WaterBase):
                             lon = args['lon'],
                             degree = args['degree'],
                             distance = args['distance'],
-                            airpressure = args['airpressure'],
                             wet = args['wet'])
 
         db.session.add(data)
