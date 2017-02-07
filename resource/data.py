@@ -1,6 +1,7 @@
 from flask_restful import reqparse, marshal, fields, marshal_with
 from BaseClass import WaterBase
 from flaskBase import request, db
+from sqlalch import Device as devices
 import sqlalch
 import dateutil.parser
 
@@ -33,6 +34,11 @@ class Data(WaterBase):
     @marshal_with(data_fields)
     def post(self, id):
         args = self.reqparse.parse_args()
+
+        dev = db.session.query(devices).filter(devices.id == id).first()
+        if dev is None:
+            return "Device not found", 404
+
         data = sqlalch.Data(devID = id,
                             lat = args['lat'],
                             lon = args['lon'],
