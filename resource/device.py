@@ -28,19 +28,6 @@ class Device(WaterBase):
 
         return alldata
 
-    @marshal_with(device_fields)
-    def post(self, id):
-        args = self.reqparse.parse_args()
-        device = devices(id = id,
-                         name = args['name'],
-                         active = args['active'],
-                         userId = g.user.id)
-
-        db.session.add(device)
-        db.session.commit()
-
-        return device, 201
-
     def put(self, id):
         args = self.reqparse.parse_args()
         userid = g.user.id
