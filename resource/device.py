@@ -24,9 +24,9 @@ class Device(WaterBase):
 
     def get(self, id):
         userid = g.user.id
-        alldata = db.session.query(devices).filter(devices.userId == userid)
+        alldata = db.session.query(devices).filter(devices.userId == userid).filter(devices.id == id).one()
 
-        return [marshal(data, device_fields) for data in alldata]
+        return alldata
 
     @marshal_with(device_fields)
     def post(self, id):

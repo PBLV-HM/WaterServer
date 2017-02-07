@@ -20,11 +20,12 @@ class Device(Base):
 
 class GroupEntry(Base):
     __tablename__ = 'GroupEntry'
-    grpID = Column('grpID', Integer)
-    devID = Column('devID', Integer)
-    timestamp = Column('timestamp', DateTime, nullable=False, primary_key=True)
+    grpID = Column('grpID', Integer, nullable=False, primary_key=True)
+    devID = Column('devID', Integer, nullable=False, primary_key=True)
+    timestamp = Column('timestamp', DateTime, nullable=False, primary_key=True, default=datetime.datetime.utcnow)
     normPeg = Column('normPeg', Float)
-    PrimaryKeyConstraint('devID', 'timestamp')
+    userId = Column('userId', Integer)
+
     def __repr__(self):
         return "<GroupEntrie(grpID='%s', timestamp='%s', devID='%s')>" % (
                                 self.grpID, self.timestamp, self.devID)
