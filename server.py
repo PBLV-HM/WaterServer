@@ -1,5 +1,6 @@
 from flaskBase import g, api, app, auth
 from resource.auth import Auth as RAuth
+from resource.device_data import DeviceData
 from resource.device_join import DeviceJoin
 from resource.device_list import DeviceList
 from resource.group_list import GroupList
@@ -23,6 +24,7 @@ def verify_password(username_or_token, password):
 
 api.add_resource(Userquery, '/user')
 api.add_resource(Device, '/device/<int:id>')
+api.add_resource(DeviceData, '/device/<int:id>/<int:time_from>')
 api.add_resource(DeviceList, '/device')
 api.add_resource(DeviceJoin, '/device/join/<int:id>')
 api.add_resource(RAuth, '/auth')

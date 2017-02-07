@@ -24,8 +24,6 @@ class GroupList(WaterBase):
                     FROM `Device` as d
                     WHERE `userId` = {user} """.format(user = g.user.id))
 
-
-
         for group in all_groups:
             group.devices = []
             group.devsNotInGroup = []
