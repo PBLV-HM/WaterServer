@@ -31,10 +31,10 @@ class GroupEntry(Base):
 
 class Groups(Base):
     __tablename__ = 'Groups'
-    grpName = Column('grpName', String(50), nullable=False)
-    grpID = Column('grpID', Integer, primary_key=True, nullable=False, autoincrement=True)
-    grpState = Column('grpState', Boolean, nullable=False)
-    user = Column('user', String(50))
+    id = Column('id', Integer, primary_key=True, nullable=False, autoincrement=True)
+    name = Column('name', String(50), nullable=False)
+    state = Column('state', Boolean, nullable=False)
+    userId = Column('userid', Integer)
 
     def __repr__(self):
         return "<Group(grpID='%s', grpName='%s', devID='%s', grpState='%s')>" % (
