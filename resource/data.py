@@ -25,7 +25,7 @@ def get_data_from_sql(sql):
     dist_data = [];
 
     for row in result:
-        time = datetime.fromtimestamp(row.time_interval).strftime('%y.%m.%d %H:%M')
+        time = datetime.fromtimestamp(row.time_interval).strftime('%d.%m.%y %H:%M')
         deg_data.append({"label": time, "value": round(row.degree, 1)})
         wet_data.append({"label": time, "value": round(row.wet, 1)})
         dist_data.append({"label": time, "value": round(row.dist, 1)})
