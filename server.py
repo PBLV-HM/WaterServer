@@ -3,6 +3,7 @@ from resource.auth import Auth as RAuth
 from resource.device_data import DeviceData
 from resource.device_join import DeviceJoin
 from resource.device_list import DeviceList
+from resource.group_data import GroupData
 from resource.group_list import GroupList
 from resource.data import Data
 from resource.device import Device
@@ -31,6 +32,7 @@ api.add_resource(RAuth, '/auth')
 api.add_resource(Data, '/data/<int:id>')
 api.add_resource(GroupList, '/group')
 api.add_resource(Group, '/group/<int:id>')
+api.add_resource(GroupData, '/group/<int:id>/<int:interval>')
 
 if __name__ == '__main__':
     app.run(debug=True, port=63837, host='0.0.0.0')
