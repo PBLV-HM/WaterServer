@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask_restful import reqparse, marshal, fields, marshal_with
 from BaseClass import WaterBase
 from flaskBase import request, db
@@ -23,12 +25,12 @@ def get_data_from_sql(sql):
     dist_data = [];
 
     for row in result:
-        time = row.time_interval
+        time = datetime.fromtimestamp(row.time_interval).strftime('%y.%m.%d %H:%M')
         deg_data.append({"label": time, "value": round(row.degree, 1)})
         wet_data.append({"label": time, "value": round(row.wet, 1)})
         dist_data.append({"label": time, "value": round(row.dist, 1)})
 
-    return {'degree': deg_data, 'dist': dist_data, 'wet': wet_data}
+    return {'degree': deg_data[::-1], 'dist': dist_data[::-1], 'wet': wet_data[::-1]}
 
 class Data(WaterBase):
 

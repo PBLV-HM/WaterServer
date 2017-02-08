@@ -70,7 +70,7 @@ class Data(Base):
     @staticmethod
     def sql_data_query(minutes, userid, where):
         return text("""SELECT
-            FROM_UNIXTIME( (UNIX_TIMESTAMP(  `timestamp` ) DIV ( {min} * 60 ) ) * ( {min} * 60 )) as time_interval,
+            ( (UNIX_TIMESTAMP(  `timestamp` ) DIV ( {min} * 60 ) ) * ( {min} * 60 )) as time_interval,
             COUNT(*) as data_count,
             AVG(degree) as degree,
             AVG(dist) as dist,
