@@ -27,7 +27,7 @@ def get_data_from_sql(sql):
         wet_data.append({"label": row.time_interval, "value": row.wet})
         dist_data.append({"label": row.time_interval, "value": row.dist})
 
-    data = {'degree': deg_data, 'dist': dist_data, 'wet': wet_data}
+    return {'degree': deg_data, 'dist': dist_data, 'wet': wet_data}
 
 class Data(WaterBase):
 
