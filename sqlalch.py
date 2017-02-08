@@ -54,7 +54,21 @@ class Data(Base):
     wet = Column('wet', Integer)
 
     @staticmethod
-    def sql_data_query(minutes, userid):
+    def sql_data_query_group(minutes, userid, groupId):
+        group = """"AND (
+            SELECT grpId FROM GroupEntry
+            WHERE devId = Data.devId AND GroupEntry.timestamp < Data.timestamp AND Data.userId = {{user}}
+            ORDER BY GroupEntry.timestamp DESC LIMIT 1
+        ) = {{group}}""".format(user=userid, group=groupId)
+        return Data.sql_data_query(minutes, userid, group)
+
+    @staticmethod
+    def sql_data_query_device(minutes, userid, devId):
+        dev = """"AND Device.id = {{dev}}""".format(user=userid, dev=devId)
+        return Data.sql_data_query(minutes, userid, dev)
+
+    @staticmethod
+    def sql_data_query(minutes, userid, where):
         return text("""SELECT
             FROM_UNIXTIME( (UNIX_TIMESTAMP(  `timestamp` ) DIV ( {min} * 60 ) ) * ( {min} * 60 )) as time_interval,
             COUNT(*) as data_count,
@@ -63,7 +77,9 @@ class Data(Base):
             AVG(wet) as wet
         FROM Data, Device
         WHERE Device.id = Data.devID AND userId = {user}
-        GROUP BY UNIX_TIMESTAMP(  `timestamp` ) DIV ( {min} * 60 )""".format(min=minutes, user=userid))
+        {{whereExtra}}
+        GROUP BY UNIX_TIMESTAMP(  `timestamp` ) DIV ( {min} * 60 )
+        ORDER BY time_interval LIMIT 12""".format(min=minutes, user=userid, whereExtra=where))
 
 class User(Base):
     __tablename__ = 'User'

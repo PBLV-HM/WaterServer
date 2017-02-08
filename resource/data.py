@@ -15,6 +15,19 @@ data_fields = {
     'wet': fields.Integer,
 }
 
+def get_data_from_sql(sql):
+    result = db.engine.execute(sql)
+
+    deg_data = [];
+    wet_data = [];
+    dist_data = [];
+
+    for row in result:
+        deg_data.append({"label": row.time_interval, "value": row.degree})
+        wet_data.append({"label": row.time_interval, "value": row.wet})
+        dist_data.append({"label": row.time_interval, "value": row.dist})
+
+    data = {'degree': deg_data, 'dist': dist_data, 'wet': wet_data}
 
 class Data(WaterBase):
 
