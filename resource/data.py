@@ -23,9 +23,10 @@ def get_data_from_sql(sql):
     dist_data = [];
 
     for row in result:
-        deg_data.append({"label": row.time_interval, "value": row.degree})
-        wet_data.append({"label": row.time_interval, "value": row.wet})
-        dist_data.append({"label": row.time_interval, "value": row.dist})
+        time = row.time_interval
+        deg_data.append({"label": time, "value": round(row.degree, 1)})
+        wet_data.append({"label": time, "value": round(row.wet, 1)})
+        dist_data.append({"label": time, "value": round(row.dist, 1)})
 
     return {'degree': deg_data, 'dist': dist_data, 'wet': wet_data}
 
