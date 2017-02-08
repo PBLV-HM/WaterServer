@@ -79,7 +79,7 @@ class Data(Base):
         WHERE Device.id = Data.devID AND userId = {user}
         {whereExtra}
         GROUP BY UNIX_TIMESTAMP(  `timestamp` ) DIV ( {min} * 60 )
-        ORDER BY time_interval LIMIT 12""".format(min=minutes, user=userid, whereExtra=where))
+        ORDER BY time_interval DESC LIMIT 12""".format(min=minutes, user=userid, whereExtra=where))
 
 class User(Base):
     __tablename__ = 'User'
