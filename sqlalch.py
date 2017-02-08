@@ -84,6 +84,18 @@ class Data(Base):
         GROUP BY UNIX_TIMESTAMP(  `timestamp` ) DIV ( {min} * 60 )
         ORDER BY time_interval DESC LIMIT 12""".format(min=minutes, user=userid, whereExtra=where))
 
+    @staticmethod
+    def sql_coord_query_group(userid, groupid, time):
+        return text("""SELECT DISTINCT lon, lat FROM
+             FROM Data, Device
+             WHERE Device.id = Data.devID AND userId = {user}
+                AND (
+                    SELECT grpId FROM GroupEntry
+                    WHERE devId = Data.devId AND GroupEntry.timestamp < Data.timestamp AND Data.userId = {user}
+                    ORDER BY GroupEntry.timestamp DESC LIMIT 1
+                ) = {group}
+            WHERE UNIX_TIMESTAMP( Data.timestamp ) > {time}""".format(user=userid, group = groupid, time=time))
+
 class User(Base):
     __tablename__ = 'User'
     id = Column('id', Integer, primary_key=True)

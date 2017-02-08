@@ -15,10 +15,16 @@ char_data_fields = {
     'value': fields.Float,
 }
 
+coord_data_fields = {
+    'lat': fields.Float,
+    'lng': fields.Float,
+}
+
 device_data_fields = {
     'degree': fields.List(fields.Nested(char_data_fields)),
     'dist': fields.List(fields.Nested(char_data_fields)),
     'wet': fields.List(fields.Nested(char_data_fields)),
+    'coords': fields.List(fields.Nested(coord_data_fields))
 }
 
 class DeviceData(WaterBase):
