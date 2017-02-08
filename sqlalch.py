@@ -24,7 +24,7 @@ class GroupEntry(Base):
     grpID = Column('grpID', Integer, nullable=False, primary_key=True)
     devID = Column('devID', Integer, nullable=False, primary_key=True)
     timestamp = Column('timestamp', DateTime, nullable=False, primary_key=True, default=datetime.datetime.utcnow)
-    normPeg = Column('normPeg', Float)
+    normPeg = Column('normPeg', Float, default=200, nullable=False)
     userId = Column('userId', Integer)
 
     def __repr__(self):
@@ -74,7 +74,10 @@ class Data(Base):
             COUNT(*) as data_count,
             AVG(degree) as degree,
             AVG(dist) as dist,
-            AVG(wet) as wet
+            AVG(wet) as wet,
+	       (SELECT normPeg FROM GroupEntry
+	        WHERE devId = Data.devId AND GroupEntry.timestamp < Data.timestamp
+	        ORDER BY timestamp DESC LIMIT 1) as normPeg
         FROM Data, Device
         WHERE Device.id = Data.devID AND userId = {user}
         {whereExtra}

@@ -26,9 +26,10 @@ def get_data_from_sql(sql):
 
     for row in result:
         time = datetime.fromtimestamp(row.time_interval).strftime('%d.%m.%y %H:%M')
+        dist = row.normPeg - row.dist
         deg_data.append({"label": time, "value": round(row.degree, 1)})
         wet_data.append({"label": time, "value": round(row.wet, 1)})
-        dist_data.append({"label": time, "value": round(row.dist, 1)})
+        dist_data.append({"label": time, "value": round(dist, 1)})
 
     return {'degree': deg_data[::-1], 'dist': dist_data[::-1], 'wet': wet_data[::-1]}
 
@@ -49,6 +50,9 @@ class Data(WaterBase):
     @marshal_with(data_fields)
     def post(self, id):
         args = self.reqparse.parse_args()
+
+        if args['distance'] > 400:
+            return "Distance to high", 400
 
         dev = db.session.query(devices).filter(devices.id == id).first()
         if dev is None:
