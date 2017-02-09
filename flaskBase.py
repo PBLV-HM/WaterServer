@@ -1,4 +1,5 @@
 from flask import Flask, abort, request, jsonify, g, url_for
+from flask import logging
 from flask_cors import CORS
 from flask_httpauth import HTTPBasicAuth
 from flask_sqlalchemy import SQLAlchemy
@@ -6,6 +7,8 @@ import flask_restful as restful
 
 app = Flask(__name__)
 CORS(app)
+logging.getLogger('flask_cors').level = logging.DEBUG
+
 
 # initialization
 app.config['SECRET_KEY'] = 'the quick brown fox jumps over the lazy dog'
