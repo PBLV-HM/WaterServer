@@ -86,15 +86,15 @@ class Data(Base):
 
     @staticmethod
     def sql_coord_query_group(userid, groupid, time):
-        return text("""SELECT DISTINCT lon, lat FROM
+        return text("""SELECT DISTINCT lon as lng, lat
              FROM Data, Device
              WHERE Device.id = Data.devID AND userId = {user}
                 AND (
                     SELECT grpId FROM GroupEntry
-                    WHERE devId = Data.devId AND GroupEntry.timestamp < Data.timestamp AND Data.userId = {user}
+                    WHERE devId = Data.devId AND GroupEntry.timestamp < Data.timestamp AND userId = {user}
                     ORDER BY GroupEntry.timestamp DESC LIMIT 1
                 ) = {group}
-            WHERE UNIX_TIMESTAMP( Data.timestamp ) > {time}""".format(user=userid, group = groupid, time=time))
+                AND Data.timestamp >= '{time}'""".format(user=userid, group = groupid, time=time))
 
 class User(Base):
     __tablename__ = 'User'

@@ -1,3 +1,6 @@
+from datetime import datetime
+
+from dateutil import parser
 from flask import g
 from sqlalchemy.sql import select
 
@@ -16,4 +19,13 @@ class GroupData(WaterBase):
     def get(self, id, interval):
         sql = Data.sql_data_query_group(interval, g.user.id, id)
         data = get_data_from_sql(sql)
+
+        last_time = data['degree'][0]['label']
+        parse_time = datetime.strptime(last_time, '%d.%m.%y %H:%M')
+
+        sql = Data.sql_coord_query_group(g.user.id, id, str(parse_time))
+        coords = db.engine.execute(sql)
+
+        data['coords'] = list(coords)
+
         return marshal(data, device_data_fields)
