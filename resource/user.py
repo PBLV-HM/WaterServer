@@ -1,3 +1,4 @@
+from flask import g
 from flask_restful import reqparse, marshal, fields
 from BaseClass import WaterBase
 from flaskBase import db
@@ -42,3 +43,22 @@ class User(WaterBase):
         else:
             all_user = db.session.query(users).all()
             return [marshal(task, user_fields) for task in all_user]
+
+    def put(self):
+        args = self.reqparse.parse_args()
+        userid = g.user.id
+        user = db.session.query(users) \
+            .filter(users.id == userid)
+
+        user.update({"firstname": args['firstname'], "lastname": args['lastname']});
+        db.session.commit()
+        return {}, 201
+
+    def delete(self):
+        userid = g.user.id
+        user = db.session.query(users) \
+            .filter(users.id == userid).first()
+
+        db.session.delete(user)
+        db.session.commit()
+        return {}, 204
