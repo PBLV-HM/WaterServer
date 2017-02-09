@@ -16,8 +16,8 @@ char_data_fields = {
 }
 
 coord_data_fields = {
-    'lat': fields.Float,
-    'lng': fields.Float,
+    'latitude': fields.Float,
+    'longitude': fields.Float,
 }
 
 device_data_fields = {

@@ -86,7 +86,7 @@ class Data(Base):
 
     @staticmethod
     def sql_coord_query_group(userid, groupid, time):
-        return text("""SELECT DISTINCT lon as lng, lat
+        return text("""SELECT DISTINCT lon as longitude, lat as latitude
              FROM Data, Device
              WHERE Device.id = Data.devID AND userId = {user}
                 AND (
