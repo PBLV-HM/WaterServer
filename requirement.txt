@@ -2,6 +2,7 @@ Flask
 Flask-HTTPAuth
 Flask-SQLAlchemy
 Flask-BasicAuth
+flask-cors
 sqlalchemy
 flask_restful
 passlib
