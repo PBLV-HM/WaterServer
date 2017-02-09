@@ -37,8 +37,8 @@ class Data(WaterBase):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('lat', type=float, location='json', required=True)
-        self.reqparse.add_argument('lon', type=float, location='json', required=True)
+        self.reqparse.add_argument('lat', type=float, location='json')
+        self.reqparse.add_argument('lon', type=float, location='json')
         self.reqparse.add_argument('degree', type=float, location='json', required=True)
         self.reqparse.add_argument('distance', type=float, location='json', required=True)
         self.reqparse.add_argument('wet', type=int, location='json', required=True)

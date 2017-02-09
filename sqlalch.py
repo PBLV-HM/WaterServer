@@ -94,6 +94,7 @@ class Data(Base):
                     WHERE devId = Data.devId AND GroupEntry.timestamp < Data.timestamp AND userId = {user}
                     ORDER BY GroupEntry.timestamp DESC LIMIT 1
                 ) = {group}
+                AND lon != NULL AND lat != NULL
                 AND Data.timestamp >= '{time}'""".format(user=userid, group = groupid, time=time))
 
 class User(Base):
