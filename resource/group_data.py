@@ -26,6 +26,13 @@ class GroupData(WaterBase):
         sql = Data.sql_coord_query_group(g.user.id, id, str(parse_time))
         coords = db.engine.execute(sql)
 
-        data['coords'] = list(coords)
+        data['coords'] = []
+        i = 0
+
+        for c in coords:
+            items = dict(c.items())
+            items['id'] = i
+            i += 1
+            data['coords'].append(items)
 
         return marshal(data, device_data_fields)

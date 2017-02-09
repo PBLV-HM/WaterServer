@@ -16,6 +16,8 @@ char_data_fields = {
 }
 
 coord_data_fields = {
+    'id': fields.Integer,
+    'title': fields.String,
     'latitude': fields.Float,
     'longitude': fields.Float,
 }
